@@ -1,0 +1,17 @@
+<!doctype html>
+<title>Users Index Page</title>
+<h1><a href="/">All Users</a> :: <a href="/add">Add User</a> :: <a href="/stats">User Stats</a></h1>
+{% if result %}
+    <div style="padding: 2px 4px;">{{ result }}</div>
+{% endif %}
+{% if ipaddress %}
+    <div style="padding: 2px 4px;">{{ ipaddress }}</div>
+{% endif %}
+    <div style="padding: 2px 4px;"><a href="/name_sort">Sort by name</a> <a href="/email_sort">Sort by email</a> <a href="/progress_sort">Sort by progress</a></div>
+{% for user in users %}
+    <div style="padding: 2px 4px; background-color:{{ loop.cycle('#f1f1f1','f9f9f9') }}"><a href="/print/{{ user.id }}">Print</a> <a href="/edit/{{ user.id }}">Edit</a> <a href="/delete/{{ user.id }}">Delete</a> {{ loop.index }} {{ user.name }} {{ user.email }} [{{ user.progress }}] </div>
+{% if loop.last %}
+    <div style="padding: 2px 4px;"><a href="/print/0">Print all {{ loop.length }} records</a></div>
+{% endif %}
+{% endfor %}
+<form name="form1" method="GET" action="/get_ip"><input type="Submit" value="IP Address"></form>

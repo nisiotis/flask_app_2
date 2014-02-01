@@ -1,0 +1,13 @@
+<!doctype html>
+<title>Add Page</title>
+<h1>Add User :: <a href="/">Cancel</a></h1>
+{% for user in users %}
+{{ user.id }} {{ user.name }} {{ user.email }} {{ user.progress }} <br />
+{% endfor %}
+<form method="POST" action="">
+  <input type="text" id="name" name="name">
+  <input type="text" id="email" name="email">
+  <input type="text" id="progress" name="progress">
+  <input type="submit" value="Save" id="save" name="save">
+</form>
+

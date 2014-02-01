@@ -1,0 +1,11 @@
+<!doctype html>
+<title>Edit Page</title>
+<h1>Edit User :: <a href="/">Cancel</a></h1>
+{{ user.id }} {{ user.name }} {{ user.email }} {{ user.progress }} <br />
+<form method="POST" action="">
+  <input type="text" id="name" name="name" value="{{ user.name }}">
+  <input type="text" id="email" name="email" value="{{ user.email }}">
+  <input type="text" id="progress" name="progress" value="{{ user.progress }}">
+  <input type="submit" value="Update" id="edit" name="edit">
+</form>
+

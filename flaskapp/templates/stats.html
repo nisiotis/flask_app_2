@@ -1,0 +1,61 @@
+<!doctype html>
+<head>
+  <title>Users Stats</title>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script type="text/javascript" src="static/graphs/jquery.jqplot.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="static/graphs/jquery.jqplot.min.css" />
+</head>
+
+<body>
+<h1><a href="/stats">User Stats</a> :: <a href="/">Back</a></h1>
+    <div style="padding: 2px 4px;"><a href="/stats_sort">Sort by progress</a></div>
+<div id="chart" style="height: 300px; width: 800px; position: relative;"></div>
+  <script>
+    $(document).ready(function(){
+    var line1 = [
+    {% for user in users %}['{{ user.name }}', {{ user.progress }}],{% endfor%}
+ ];
+ 
+    $('#chart').jqplot([line1], {
+        animate: !$.jqplot.use_excanvas,
+        title:'Users Progess',
+        seriesDefaults:{
+            renderer:$.jqplot.BarRenderer,
+            pointLabels: { show: true, edgeTolerance: -15 },
+            rendererOptions: {
+                // Set the varyBarColor option to true to use different colors for each bar.
+                // The default series colors are used.
+                varyBarColor: true,
+                fillToZero: true
+                
+            }
+        },
+        series:[
+          { pointLabels: {
+             show: true,
+             location:'s',
+             edgeTolerance: -25,
+             labels: [{% for user in users %}'{{ user.progress }}',{% endfor %}],
+           }}
+        ],
+        axes:{
+            xaxis:{
+                renderer: $.jqplot.CategoryAxisRenderer
+            },
+            yaxis:{
+                min: 0.00,
+                max: 100.00
+    
+            }
+
+        }
+    });
+    });
+  </script>
+  <script type="text/javascript" src="static/graphs/plugins/jqplot.barRenderer.min.js"></script>
+  <script type="text/javascript" src="static/graphs/plugins/jqplot.categoryAxisRenderer.min.js"></script>
+  <script type="text/javascript" src="static/graphs/plugins/jqplot.categoryAxisRenderer.min.js"></script>
+  <script type="text/javascript" src="static/graphs/plugins/jqplot.pointLabels.min.js"></script>
+
+</body>
+</html>
