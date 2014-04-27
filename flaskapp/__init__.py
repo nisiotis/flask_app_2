@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 #!/usr/bin/env python
 
-import g2, os
 from flask import Flask, send_file, render_template
 from flask import session, redirect, url_for, escape
 from flask import request, Response, jsonify
@@ -52,6 +51,9 @@ def index():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
+        # Login code here...
+        # Access the database and do the match
+        # Then setup the session
         session['username'] = request.form['username']
         return redirect(url_for('index'))
     ip = "Your ip is " + request.remote_addr
