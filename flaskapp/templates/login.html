@@ -1,0 +1,10 @@
+<!doctype html>
+<title>Users Login Page</title>
+<h1><a href="/">Login Users</a></h1>
+{% if ipaddress %}
+    <div style="padding: 2px 4px;">{{ ipaddress }}</div>
+{% endif %}
+<form name="form1" method="POST" action="/login">
+  <input type="text" value="Login" name="username">
+  <input type="Submit" value="Login">
+</form>
