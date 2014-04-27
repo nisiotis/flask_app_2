@@ -3,6 +3,7 @@
 
 import g2, os
 from flask import Flask, send_file, render_template
+from flask import session, redirect, url_for, escape
 from flask import request, Response, jsonify
 from flask import make_response
 from database import engine, db_session
@@ -24,7 +25,6 @@ from reportlab.platypus.doctemplate import NextPageTemplate, SimpleDocTemplate
 from reportlab.platypus.flowables import PageBreak
 
 
-
 app = Flask(__name__)
 
 @app.teardown_request
@@ -38,22 +38,29 @@ def add_header(response):
     and also to cache the rendered page for 10 minutes.
     """
     response.headers['X-UA-Compatible'] = 'IE=Edge,chrome=1'
-    response.headers['Cache-Control'] = 'public, max-age=0'
+#    response.headers['Cache-Control'] = 'public, max-age=0'
     return response
 
 @app.route("/")
 def index():
-    u = User.query.all()
+    if 'username' in session:
+        u = User.query.all()
+        return render_template('index.html', users=u, loggeduser=session['username'])
+    else:
+        return redirect(url_for('login'))
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        session['username'] = request.form['username']
+        return redirect(url_for('index'))
     ip = "Your ip is " + request.remote_addr
-    return render_template('index.html', users=u, ipaddress=ip)
+    return render_template('login.html', ipaddress=ip)
 
-
-@app.route("/get_ip", methods=["GET"])
-def getip():
-    u = User.query.all()
-    ip = "You requested your ip which is " + request.remote_addr
-    return render_template('index.html', users=u, ipaddress=ip)
-
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    return redirect(url_for('index'))
 
 @app.route("/name_sort")
 def namesort():
@@ -126,7 +133,6 @@ def do_update(uid, name, email, progress):
     except:
         return "Update Failed"
 
-
 @app.route('/delete/<int:uid>')
 def delete(uid):
     try:
@@ -190,25 +196,7 @@ def statssort():
                            users=u)
     
 
-
-#def stats(image="image.png"):
-#    return render_template('stats.html',
-#                           image=image)
-
-#    return send_file(pdf,
-#                     attachment_filename="user.pdf", mimetype='application/pdf',
-#                     as_attachment=True)
-
-#@app.route('/image.png')
-#def image_png():
-#    image = StringIO()
-#    u = User.query.all()
-#    g2.plot(image, u)
-#    image.seek(0)
-#    return send_file(image,
-#                     attachment_filename="image.png",
-#                     as_attachment=True)
-
+app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
 if __name__ == "__main__":
     app.run(debug=True)

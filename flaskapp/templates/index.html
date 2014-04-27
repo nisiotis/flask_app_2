@@ -1,6 +1,10 @@
 <!doctype html>
 <title>Users Index Page</title>
-<h1><a href="/">All Users</a> :: <a href="/add">Add User</a> :: <a href="/stats">User Stats</a></h1>
+<h1><a href="/">All Users</a> :: <a href="/add">Add User</a> :: <a href="/stats">User Stats</a> :: <a href="/logout">Logout</a></h1>
+{% if loggeduser %}
+    <div style="padding: 2px 4px;">Logged in as {{ loggeduser }}</div>
+{% endif %}
+
 {% if result %}
     <div style="padding: 2px 4px;">{{ result }}</div>
 {% endif %}
@@ -14,4 +18,3 @@
     <div style="padding: 2px 4px;"><a href="/print/0">Print all {{ loop.length }} records</a></div>
 {% endif %}
 {% endfor %}
-<form name="form1" method="GET" action="/get_ip"><input type="Submit" value="IP Address"></form>
